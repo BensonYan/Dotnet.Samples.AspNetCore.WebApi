@@ -41,11 +41,21 @@ public sealed class PlayerRepository(PlayerDbContext dbContext)
             await query.CountAsync(
                 cancellationToken);
 
+        var offset =
+            ((long)page - 1) * pageSize;
+
+        if (offset > int.MaxValue)
+        {
+            return (
+                new List<Player>(),
+                totalCount);
+        }
+
         var items =
             await query
                 .OrderBy(player =>
                     player.SquadNumber)
-                .Skip((page - 1) * pageSize)
+                .Skip((int)offset)
                 .Take(pageSize)
                 .ToListAsync(
                     cancellationToken);
@@ -57,6 +67,4 @@ public sealed class PlayerRepository(PlayerDbContext dbContext)
     {
         return await dbContext.Players.AnyAsync(p => p.SquadNumber == squadNumber);
     }
-
-
 }

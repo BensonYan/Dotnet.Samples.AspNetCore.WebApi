@@ -360,7 +360,6 @@ public class PlayerControllerTests : IDisposable
             Times.Never);
     }
 
-
     [Fact]
     [Trait("Category", "Unit")]
     public async Task Get_PlayerById_Unknown_Returns404NotFound()

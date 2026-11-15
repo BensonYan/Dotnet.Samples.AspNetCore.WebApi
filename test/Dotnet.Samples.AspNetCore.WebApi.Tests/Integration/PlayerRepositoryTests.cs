@@ -211,6 +211,26 @@ public class PlayerRepositoryTests : IAsyncLifetime
         result.Items.Should().BeEmpty();
     }
 
+    [Fact]
+    [Trait("Category", "Integration")]
+    public async Task
+    SearchAsync_PageOffsetExceedsIntMax_ReturnsEmptyPage()
+    {
+        // Act
+        var result =
+            await _repository.SearchAsync(
+                team: null,
+                position: null,
+                page: 429_496_731,
+                pageSize: 10,
+                cancellationToken:
+                    CancellationToken.None);
+
+        // Assert
+        result.TotalCount.Should().Be(26);
+        result.Items.Should().BeEmpty();
+    }
+
     /* -------------------------------------------------------------------------
      * FindByIdAsync
      * ---------------------------------------------------------------------- */
