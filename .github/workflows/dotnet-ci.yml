@@ -4,6 +4,7 @@
 name: .NET CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "master" ]
   pull_request:
@@ -57,7 +58,7 @@ jobs:
           cache-dependency-path: |
             src/Dotnet.Samples.AspNetCore.WebApi/packages.lock.json
             test/Dotnet.Samples.AspNetCore.WebApi.Tests/packages.lock.json
-      
+
       - name: Restore dependencies in locked mode
         run: dotnet restore --locked-mode
 
