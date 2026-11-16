@@ -34,8 +34,8 @@ jobs:
             src/Dotnet.Samples.AspNetCore.WebApi/packages.lock.json
             test/Dotnet.Samples.AspNetCore.WebApi.Tests/packages.lock.json
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Restore dependencies in locked mode
+        run: dotnet restore --locked-mode
 
       - name: Build projects
         run: dotnet build --no-restore
@@ -57,12 +57,15 @@ jobs:
           cache-dependency-path: |
             src/Dotnet.Samples.AspNetCore.WebApi/packages.lock.json
             test/Dotnet.Samples.AspNetCore.WebApi.Tests/packages.lock.json
+      
+      - name: Restore dependencies in locked mode
+        run: dotnet restore --locked-mode
 
       - name: Lint commit messages
         uses: wagoid/commitlint-github-action@v6.2.1
 
       - name: Run tests and generate Cobertura coverage reports
-        run: dotnet test --results-directory "coverage" --collect:"XPlat Code Coverage" --settings .runsettings
+        run: dotnet test --no-restore --results-directory "coverage" --collect:"XPlat Code Coverage" --settings .runsettings
 
       - name: Install dotnet-coverage tool
         run: dotnet tool install --global dotnet-coverage
